@@ -148,7 +148,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
 })
 
 exports.loginUser = asyncHandler(async (req, res) => {
-    const { email, password } = erq.body
+    const { email, password } = req.body
     const { error, isError } = checkEmpty({ email, password })
     if (isError) { return res.status(400).json({ message: "All Fields Required", error }) }
     const result = await User.findOne({ email })
@@ -158,6 +158,7 @@ exports.loginUser = asyncHandler(async (req, res) => {
     }
 
     const verify = await bcrypt.compare(password, result.password)
+
     if (!verify) {
         return res.status(400).json({ message: "Password Do Not match" })
     }
