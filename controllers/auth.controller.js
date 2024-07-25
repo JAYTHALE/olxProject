@@ -120,20 +120,20 @@ exports.logoutAdmin = asyncHandler(async (req, res) => {
 })
 
 exports.registerUser = asyncHandler(async (req, res) => {
-    const { name, mobile, email, password, ConformPassword } = req.body
+    const { name, mobile, email, password, cpassword } = req.body
     const { error, isError } = checkEmpty({
         name,
         mobile,
         email,
         password,
-        ConformPassword
+        cpassword
     })
     if (isError) { return res.status(400).json({ message: "All Fields Required", error }) }
     if (!validator.isEmail(email)) { return res.status(400).json({ message: "Invalid Email" }) }
     if (!validator.isMobilePhone(mobile, "en-IN")) { return res.status(400).json({ message: "Invalid mobile" }) }
     if (!validator.isStrongPassword(password)) { return res.status(400).json({ message: " Provied Strong password" }) }
-    if (!validator.isStrongPassword(ConformPassword)) { return res.status(400).json({ message: "Provied Strong ConformPassword" }) }
-    if (password !== ConformPassword) { return res.status(400).json({ message: "Password Do not match" }) }
+    if (!validator.isStrongPassword(cpassword)) { return res.status(400).json({ message: "Provied Strong cpassword" }) }
+    if (password !== cpassword) { return res.status(400).json({ message: "password Do not match" }) }
 
     const hash = await bcrypt.hash(password, 10)
 
