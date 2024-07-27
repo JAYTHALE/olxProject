@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
     emailCode: {
         type: String,
     },
-    mobilelCode: {
+    mobileCode: {
         type: String,
     },
     avatar: {
