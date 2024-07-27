@@ -162,7 +162,7 @@ exports.loginUser = asyncHandler(async (req, res) => {
     if (!verify) {
         return res.status(400).json({ message: "Password Do Not match" })
     }
-    const token = jwt.sign({ userID: result._id }, process.env.JWT_KEY, { expiresIn: "180d" })
+    const token = jwt.sign({ userId: result._id }, process.env.JWT_KEY, { expiresIn: "180d" })
 
     res.cookie("user", token, {
         httpOnly: true,
