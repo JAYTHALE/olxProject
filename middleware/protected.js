@@ -7,6 +7,7 @@ exports.userProtected = (req, res, next) => {
     }
 
     jwt.verify(user, process.env.JWT_KEY, (err, decode) => {
+        console.log(decode)
         if (err) {
             return res.status(401).json({ message: "JWT Error", error: err.message })
         }
