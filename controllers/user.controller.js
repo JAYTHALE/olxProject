@@ -29,6 +29,11 @@ exports.verifyEmailOTP = asyncHandler(async (req, res) => {
     res.json({ message: "Email Verify Success" })
 })
 
+exports.verifyUserMobile = asyncHandler(async (req, res) => {
+
+    res.json({ message: "Verification send Success" })
+})
+
 exports.verifyMobileOTP = asyncHandler(async (req, res) => {
     const { otp } = req.body
     const result = await User.findById(req.loggedInUser)
