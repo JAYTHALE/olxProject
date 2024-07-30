@@ -2,6 +2,8 @@ const asyncHandler = require("express-async-handler")
 const User = require("../models/User")
 const sendEmail = require("../utils/email")
 const { sendSms } = require("../utils/sms")
+const { checkEmpty } = require("../utils/CheckEmpty")
+const Posts = require("../models/Posts")
 
 
 exports.verifyUserEmail = asyncHandler(async (req, res) => {
@@ -72,4 +74,14 @@ exports.verifyMobileOTP = asyncHandler(async (req, res) => {
             mobileVerified: updateUser.mobileVerified,
         }
     })
+})
+
+exports.addPost = asyncHandler(async (req, res) => {
+    const { title, desc, price, images, location } = req.body
+    const { error, isError } = checkEmpty({ title, desc, price, images, location })
+    if (isError) {
+        return res.status(400).json({ message: "All Fields Required", error })
+    }
+    await Posts.create({ title, desc, price, images, location, user: req.loggedInUser })
+    res.json({ message: "Post create Success" })
 })
