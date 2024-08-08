@@ -4,6 +4,7 @@ const sendEmail = require("../utils/email")
 const { sendSms } = require("../utils/sms")
 const { checkEmpty } = require("../utils/CheckEmpty")
 const Posts = require("../models/Posts")
+const upload = require("../utils/upload")
 
 
 exports.verifyUserEmail = asyncHandler(async (req, res) => {
@@ -89,12 +90,15 @@ exports.getLocation = asyncHandler(async (req, res) => {
 })
 
 exports.addPost = asyncHandler(async (req, res) => {
-    const { title, desc, price, images, location, category } = req.body
-    const { error, isError } = checkEmpty({ title, desc, price, images, location, category })
-    if (isError) {
-        return res.status(400).json({ message: "All Fields Required", error })
-    }
+    upload(req, res, async err => {
+        const { title, desc, price, location, category } = req.body
+        const { error, isError } = checkEmpty({ title, desc, price, location, category })
+        if (isError) {
+            return res.status(400).json({ message: "All Fields Required", error })
+        }
 
-    await Posts.create({ title, desc, price, images, location, category, user: req.loggedInUser })
-    res.json({ message: "Post create Success" })
+        await Posts.create({ title, desc, price, images, location, category, user: req.loggedInUser })
+        res.json({ message: "Post create Success" })
+    })
+
 })
